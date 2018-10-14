@@ -39,7 +39,25 @@ namespace Demo_FileIO_NTier.Starter.DataAccessLayer
 
         void IDataService.WriteAll(IEnumerable<Character> characters)
         {
-            throw new NotImplementedException();
+            RootObject rootObject = new RootObject();
+            rootObject.Characters = new Characters();
+            rootObject.Characters.Character = characters as List<Character>;
+
+            string jsonString = JsonConvert.SerializeObject(rootObject);
+
+            try
+            {
+                StreamWriter writer = new StreamWriter(_dataFilePath);
+                using (writer)
+                {
+                    writer.WriteLine(jsonString);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
         public JsonDataService(string datafile)
         {
